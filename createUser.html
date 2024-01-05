@@ -1,0 +1,54 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form action="" class="form">
+        <h2>Add user</h2>
+        <p style="text-align: left">Name: </p><input type="text" name="name" placeholder="name">
+        <p style="text-align: left">Username: </p><input type="text" name="username" placeholder="username">
+        <p style="text-align: left">Email: </p><input type="email" name="email" placeholder="email">
+        <p style="text-align: left">Password: </p><input type="password" name="password" placeholder="password">
+
+        <button type="submit">Add User</button>
+    </form>
+
+    <script>
+        const formSignin = document.querySelector('.form');
+
+        formSignin.addEventListener('submit', async event => {
+            event.preventDefault();
+
+            const formData = new FormData(formSignin);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('http://localhost:7000/user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Sign In failed');
+                }
+
+                const responseData = await response.json();
+                console.log(responseData);
+
+                // Display notification
+                alert('User Added');
+
+                // Redirect to userList.html
+                window.location.href = './userList.html';
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        });
+    </script>
+</body>
+</html>
